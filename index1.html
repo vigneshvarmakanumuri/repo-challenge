@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fuel Price Comparison</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .price-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 220px;
+    }
+
+    .fuel-type {
+      font-size: 20px;
+      color: #0074D9;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 28px;
+      color: #FF4136;
+    }
+
+    .last-updated {
+      font-size: 12px;
+      color: gray;
+      margin-top: 10px;
+    }
+
+    .calculator {
+      margin-top: 50px;
+      background-color: white;
+      padding: 30px;
+      display: inline-block;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .cheaper {
+      color: green;
+      font-weight: bold;
+    }
+
+    .more-expensive {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Today's Fuel Prices</h1>
+
+  <div class="price-container">
+    <div class="card">
+      <div class="fuel-type">Petrol</div>
+      <div class="price" id="petrolPrice">₹106.25 / L</div>
+      <div class="last-updated">Last updated: 18 Sep 2025</div>
+    </div>
+    <div class="card">
+      <div class="fuel-type">Diesel</div>
+      <div class="price" id="dieselPrice">₹94.80 / L</div>
+      <div class="last-updated">Last updated: 18 Sep 2025</div>
+    </div>
+  </div>
+
+  <div class="calculator">
+    <h2>Compare Fuel Costs</h2>
+
+    <label for="liters">Enter Number of Liters:</label>
+    <input type="number" id="liters" placeholder="e.g. 10" value="5">
+
+    <button onclick="comparePrices()">Compare Prices</button>
+
+    <div id="result">
+      <p>Petrol cost for 5 L: ₹531.25</p>
+      <p>Diesel cost for 5 L: ₹474.00</p>
+      <p class="cheaper">Diesel is cheaper by ₹57.25</p>
+    </div>
+  </div>
+
+  <script>
+    const petrolPrice = 106.25;
+    const dieselPrice = 94.80;
+
+    function comparePrices() {
+      const liters = parseFloat(document.getElementById("liters").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(liters) || liters <= 0) {
+        resultDiv.innerHTML = "<span class='more-expensive'>Please enter a valid number of liters.</span>";
+        return;
+      }
+
+      const petrolTotal = liters * petrolPrice;
+      const dieselTotal = liters * dieselPrice;
+
+      let comparison = "";
+      if (petrolTotal > dieselTotal) {
+        comparison = `<p class="cheaper">Diesel is cheaper by ₹${(petrolTotal - dieselTotal).toFixed(2)}</p>`;
+      } else if (dieselTotal > petrolTotal) {
+        comparison = `<p class="cheaper">Petrol is cheaper by ₹${(dieselTotal - petrolTotal).toFixed(2)}</p>`;
+      } else {
+        comparison = `<p>Both fuel types cost the same.</p>`;
+      }
+
+      resultDiv.innerHTML = `
+        <p>Petrol cost for ${liters} L: ₹${petrolTotal.toFixed(2)}</p>
+        <p>Diesel cost for ${liters} L: ₹${dieselTotal.toFixed(2)}</p>
+        ${comparison}
+      `;
+    }
+  </script>
+
+</body>
+</html>
